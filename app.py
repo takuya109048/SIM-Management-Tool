@@ -438,6 +438,9 @@ def edit_contract(contract_id):
         return redirect(url_for('index'))
 
     # Convert contract_data dict to Contract object for form display and calculate_financials
+    # Remove previous_contract_id if it exists, as Contract.__init__ no longer accepts it
+    if 'previous_contract_id' in contract_data:
+        del contract_data['previous_contract_id']
     contract = Contract(**contract_data)
     if 'contract_date' in contract_data and contract_data['contract_date']:
         contract.contract_date = date.fromisoformat(contract_data['contract_date'])
