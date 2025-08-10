@@ -1,0 +1,180 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{% if form_title %}{{ form_title }}{% else %}{{ _('Contract Form') }}{% endif %}
+{% endblock %}
+
+{% block content %}
+<h1>{% if form_title %}{{ form_title }}{% else %}{{ _('Contract Form') }}{% endif %}</h1>
+
+<form method="post">
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="carrier_name" class="form-label">{{ _('Carrier Name') }}</label>
+            <select class="form-select" id="carrier_name" name="carrier_name">
+                <option value="">{{ _('Select a carrier') }}</option>
+                {% for carrier in all_carriers %}
+                    <option value="{{ carrier.carrier_name }}" {% if contract and contract.carrier_name == carrier.carrier_name %}selected{% endif %}>{{ carrier.carrier_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="plan_name" class="form-label">{{ _('Plan Name') }}</label>
+            <select class="form-select" id="plan_name" name="plan_name">
+                <option value="">{{ _('Select a plan') }}</option>
+                {% if contract and contract.carrier_name %}
+                    {% for plan in all_carriers | selectattr('carrier_name', '==', contract.carrier_name) | first | attr('plans') %}
+                        <option value="{{ plan.plan_name }}" {% if contract.plan_name == plan.plan_name %}selected{% endif %}>{{ plan.plan_name }}</option>
+                    {% endfor %}
+                {% endif %}
+            </select>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="contract_date" class="form-label">{{ _('Contract Date') }}</label>
+            <input type="date" class="form-control" id="contract_date" name="contract_date" value="{{ contract.contract_date or '' }}">
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="scheduled_termination_date" class="form-label">{{ _('Scheduled Termination Date') }}</label>
+            <input type="date" class="form-control" id="scheduled_termination_date" name="scheduled_termination_date" value="{{ contract.scheduled_termination_date or '' }}">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="phone_number" class="form-label">{{ _('Phone Number') }}</label>
+            <input type="text" class="form-control" id="phone_number" name="phone_number" value="{{ contract.phone_number or '' }}">
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="contractor_name" class="form-label">{{ _('Contractor Name') }}</label>
+            <input type="text" class="form-control" id="contractor_name" name="contractor_name" value="{{ contract.contractor_name or '' }}">
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="sim_id_last_5_digits" class="form-label">{{ _('SIM ID Last 5 Digits') }}</label>
+            <input type="text" class="form-control" id="sim_id_last_5_digits" name="sim_id_last_5_digits" value="{{ contract.sim_id_last_5_digits or '' }}">
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label for="initial_fee" class="form-label">{{ _('Initial Fee') }}</label>
+            <input type="number" class="form-control" id="initial_fee" name="initial_fee" value="{{ contract.initial_fee or 0 }}">
+        </div>
+        <div class="col-md-4 mb-3">
+            <label for="first_month_cost" class="form-label">{{ _('First Month Cost') }}</label>
+            <input type="number" class="form-control" id="first_month_cost" name="first_month_cost" value="{{ contract.first_month_cost or 0 }}">
+        </div>
+        <div class="col-md-4 mb-3">
+            <label for="monthly_cost" class="form-label">{{ _('Monthly Cost') }}</label>
+            <input type="number" class="form-control" id="monthly_cost" name="monthly_cost" value="{{ contract.monthly_cost or 0 }}">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label for="cashback_amount" class="form-label">{{ _('Cashback Amount') }}</label>
+            <input type="number" class="form-control" id="cashback_amount" name="cashback_amount" value="{{ contract.cashback_amount or 0 }}">
+        </div>
+    </div>
+
+    <hr>
+
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label for="device_type" class="form-label">{{ _('Device Type') }}</label>
+            <input type="text" class="form-control" id="device_type" name="device_type" value="{{ contract.device_type or '' }}">
+        </div>
+        <div class="col-md-4 mb-3">
+            <label for="device_cost" class="form-label">{{ _('Device Cost') }}</label>
+            <input type="number" class="form-control" id="device_cost" name="device_cost" value="{{ contract.device_cost or 0 }}">
+        </div>
+        <div class="col-md-4 mb-3">
+            <label for="device_resale_value" class="form-label">{{ _('Device Resale Value') }}</label>
+            <input type="number" class="form-control" id="device_resale_value" name="device_resale_value" value="{{ contract.device_resale_value or 0 }}">
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label for="memo" class="form-label">{{ _('Memo') }}</label>
+        <textarea class="form-control" id="memo" name="memo" rows="3">{{ contract.memo or '' }}</textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success">{{ _('Save Contract') }}</button>
+    <a href="{{ url_for('index') }}" class="btn btn-secondary">{{ _('Cancel') }}</a>
+</form>
+
+<script>
+    const allCarriersData = {{ all_carriers | tojson }};
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const carrierSelect = document.getElementById('carrier_name');
+        const planSelect = document.getElementById('plan_name');
+        const initialFeeInput = document.getElementById('initial_fee');
+        const contractDateInput = document.getElementById('contract_date');
+        const scheduledTerminationDateInput = document.getElementById('scheduled_termination_date');
+
+        function updatePlans() {
+            const selectedCarrierName = carrierSelect.value;
+            planSelect.innerHTML = '<option value="">' + '{{ _('Select a plan') }}' + '</option>'; // Clear existing options
+
+            if (selectedCarrierName) {
+                const selectedCarrier = allCarriersData.find(c => c.carrier_name === selectedCarrierName);
+                if (selectedCarrier && selectedCarrier.plans) {
+                    selectedCarrier.plans.forEach(plan => {
+                        const option = document.createElement('option');
+                        option.value = plan.plan_name;
+                        option.textContent = plan.plan_name;
+                        planSelect.appendChild(option);
+                    });
+                }
+            }
+            // Re-select the current plan if it exists (for edit mode)
+            if (planSelect.dataset.currentPlan) {
+                planSelect.value = planSelect.dataset.currentPlan;
+                delete planSelect.dataset.currentPlan;
+            }
+        }
+
+        function updateInitialFeeAndTerminationDate() {
+            const selectedCarrierName = carrierSelect.value;
+            const selectedPlanName = planSelect.value;
+            
+            if (selectedCarrierName && selectedPlanName) {
+                const selectedCarrier = allCarriersData.find(c => c.carrier_name === selectedCarrierName);
+                if (selectedCarrier && selectedCarrier.plans) {
+                    const selectedPlan = selectedCarrier.plans.find(p => p.plan_name === selectedPlanName);
+                    if (selectedPlan) {
+                        // Auto-fill initial fee
+                        initialFeeInput.value = selectedPlan.initial_fee;
+
+                        // Auto-calculate scheduled termination date
+                        if (contractDateInput.value && selectedPlan.minimum_maintenance_period >= 0) {
+                            const contractDate = new Date(contractDateInput.value);
+                            const terminationDate = new Date(contractDate);
+                            terminationDate.setDate(contractDate.getDate() + selectedPlan.minimum_maintenance_period);
+                            scheduledTerminationDateInput.value = terminationDate.toISOString().split('T')[0];
+                        }
+                    }
+                }
+            }
+        }
+
+        // Store current plan for re-selection after carrier change
+        if (planSelect.value) {
+            planSelect.dataset.currentPlan = planSelect.value;
+        }
+
+        carrierSelect.addEventListener('change', updatePlans);
+        planSelect.addEventListener('change', updateInitialFeeAndTerminationDate);
+        contractDateInput.addEventListener('change', updateInitialFeeAndTerminationDate);
+
+        // Initial call to populate plans if carrier is already selected (e.g., in edit mode)
+        updatePlans();
+        updateInitialFeeAndTerminationDate();
+    });
+</script>
+{% endblock %}

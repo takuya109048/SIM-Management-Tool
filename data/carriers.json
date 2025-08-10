@@ -1,0 +1,57 @@
+[
+  {
+    "carrier_name": "docomo",
+    "plans": [
+      {
+        "plan_name": "eximo",
+        "initial_fee": 3850,
+        "minimum_maintenance_period": 180
+      },
+      {
+        "plan_name": "irumo",
+        "initial_fee": 3850,
+        "minimum_maintenance_period": 180
+      }
+    ]
+  },
+  {
+    "carrier_name": "au",
+    "plans": [
+      {
+        "plan_name": "使い放題MAX",
+        "initial_fee": 3850,
+        "minimum_maintenance_period": 180
+      },
+      {
+        "plan_name": "スマホミニプラン",
+        "initial_fee": 3850,
+        "minimum_maintenance_period": 180
+      }
+    ]
+  },
+  {
+    "carrier_name": "SoftBank",
+    "plans": [
+      {
+        "plan_name": "メリハリ無制限+",
+        "initial_fee": 3850,
+        "minimum_maintenance_period": 180
+      },
+      {
+        "plan_name": "ミニフィットプラン+",
+        "initial_fee": 3850,
+        "minimum_maintenance_period": 180
+      }
+    ]
+  },
+  {
+    "carrier_name": "Rakuten Mobile",
+    "plans": [
+      {
+        "plan_name": "Rakuten最強プラン",
+        "initial_fee": 0,
+        "minimum_maintenance_period": 0
+      }
+    ]
+  }
+]
