@@ -1,0 +1,7 @@
+[
+    {
+        "id": 1,
+        "username": "takuya1992",
+        "password_hash": "scrypt:32768:8:1$a6uTpI9kcgt35mIc$09395001e1458170aa60803df905643a53a217fb7ddc511b61963b37e71132092ddecba5ad1d0b4a6ab60d6e084f844d4361b61c95c69da35192025793db208b"
+    }
+]

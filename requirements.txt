@@ -1,7 +1,6 @@
 prompt_toolkit
 rich
 Flask
-Flask-Babel
+
 gunicorn
 Flask-Login
-Flask-SQLAlchemy

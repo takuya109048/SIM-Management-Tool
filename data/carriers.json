@@ -1,57 +1,96 @@
 [
-  {
-    "carrier_name": "docomo",
-    "plans": [
-      {
-        "plan_name": "eximo",
-        "initial_fee": 3850,
-        "minimum_maintenance_period": 180
-      },
-      {
-        "plan_name": "irumo",
-        "initial_fee": 3850,
-        "minimum_maintenance_period": 180
-      }
-    ]
-  },
-  {
-    "carrier_name": "au",
-    "plans": [
-      {
-        "plan_name": "使い放題MAX",
-        "initial_fee": 3850,
-        "minimum_maintenance_period": 180
-      },
-      {
-        "plan_name": "スマホミニプラン",
-        "initial_fee": 3850,
-        "minimum_maintenance_period": 180
-      }
-    ]
-  },
-  {
-    "carrier_name": "SoftBank",
-    "plans": [
-      {
-        "plan_name": "メリハリ無制限+",
-        "initial_fee": 3850,
-        "minimum_maintenance_period": 180
-      },
-      {
-        "plan_name": "ミニフィットプラン+",
-        "initial_fee": 3850,
-        "minimum_maintenance_period": 180
-      }
-    ]
-  },
-  {
-    "carrier_name": "Rakuten Mobile",
-    "plans": [
-      {
-        "plan_name": "Rakuten最強プラン",
-        "initial_fee": 0,
-        "minimum_maintenance_period": 0
-      }
-    ]
-  }
+    {
+        "id": 1,
+        "carrier_name": "ドコモ",
+        "user_id": 1,
+        "plans": [
+            {
+                "id": 1,
+                "plan_name": "5Gギガホ プレミア",
+                "initial_fee": 3300,
+                "minimum_maintenance_period": 181
+            },
+            {
+                "id": 2,
+                "plan_name": "irumo",
+                "initial_fee": 3300,
+                "minimum_maintenance_period": 181
+            },
+            {
+                "id": 3,
+                "plan_name": "ahamo",
+                "initial_fee": 0,
+                "minimum_maintenance_period": 181
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "carrier_name": "au",
+        "user_id": 1,
+        "plans": [
+            {
+                "id": 1,
+                "plan_name": "使い放題MAX 5G/4G",
+                "initial_fee": 3300,
+                "minimum_maintenance_period": 181
+            },
+            {
+                "id": 2,
+                "plan_name": "スマホミニプラン 5G/4G",
+                "initial_fee": 3300,
+                "minimum_maintenance_period": 181
+            },
+            {
+                "id": 3,
+                "plan_name": "povo2.0",
+                "initial_fee": 0,
+                "minimum_maintenance_period": 181
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "carrier_name": "ソフトバンク",
+        "user_id": 1,
+        "plans": [
+            {
+                "id": 1,
+                "plan_name": "ペイトク無制限",
+                "initial_fee": 3300,
+                "minimum_maintenance_period": 181
+            },
+            {
+                "id": 2,
+                "plan_name": "ペイトク50",
+                "initial_fee": 3300,
+                "minimum_maintenance_period": 181
+            },
+            {
+                "id": 3,
+                "plan_name": "LINEMO スマホプラン",
+                "initial_fee": 0,
+                "minimum_maintenance_period": 181
+            },
+            {
+                "id": 4,
+                "plan_name": "LINEMO ミニプラン",
+                "initial_fee": 0,
+                "minimum_maintenance_period": 181
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "carrier_name": "楽天モバイル",
+        "user_id": 1,
+        "plans": [
+            {
+                "id": 1,
+                "plan_name": "Rakuten最強プラン",
+                "initial_fee": 0,
+                "minimum_maintenance_period": 181
+            }
+        ]
+    }
 ]

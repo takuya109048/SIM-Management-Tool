@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
-{% block title %}{{ gettext('Register') }}{% endblock %}
+{% block title %}登録{% endblock %}
 {% block content %}
-  <h2>{{ gettext('Register') }}</h2>
+  <h2>登録</h2>
   {% with messages = get_flashed_messages() %}
     {% if messages %}
       <ul class=flashes>
@@ -13,12 +13,12 @@
   {% endwith %}
   <form method="post">
     <dl>
-      <dt>{{ gettext('Username') }}</dt>
+      <dt>ユーザー名</dt>
       <dd><input type="text" name="username" required></dd>
-      <dt>{{ gettext('Password') }}</dt>
+      <dt>パスワード</dt>
       <dd><input type="password" name="password" required></dd>
     </dl>
-    <p><input type="submit" value="{{ gettext('Register') }}">
+    <p><input type="submit" value="登録">
   </form>
-  <p>{{ gettext('Already have an account?') }} <a href="{{ url_for('login') }}">{{ gettext('Login') }}</a></p>
+  <p>すでにアカウントをお持ちですか？ <a href="{{ url_for('login') }}">ログイン</a></p>
 {% endblock %}

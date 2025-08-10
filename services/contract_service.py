@@ -51,24 +51,7 @@ def calculate_financials(contract: Contract) -> Dict[str, Any]:
     }
 
 
-def get_chain_financials(contract: Contract):
-    # Returns dict with computed fields or None if can't compute
-    contracts = load_contracts()
-    chain = [contract]
-    curr = contract
-    while curr.previous_contract_id:
-        prev = next((c for c in contracts if c.contract_id == curr.previous_contract_id), None)
-        if prev:
-            chain.append(prev)
-            curr = prev
-        else:
-            break
-    total_balance = 0
-    for c in chain:
-        financials = calculate_financials(c)
-        if financials and financials['balance'] is not None:
-            total_balance += financials['balance']
-    return {'chain_balance': total_balance}
+
 
 def update_contract(updated_contract: Contract):
     contracts = load_contracts()
