@@ -1,8 +1,6 @@
-# -*- coding: utf-8 -*-
 import unittest
 from datetime import date
-from models.contract import Contract
-from services.contract_service import calculate_financials
+from app import Contract # Import Contract from app.py
 
 class TestFinancialCalculations(unittest.TestCase):
 
@@ -23,7 +21,7 @@ class TestFinancialCalculations(unittest.TestCase):
         # 支出 = 3300 + 1000 + (2000 * 7) + 10000 = 28300
         # 収入 = 5000 + 8000 = 13000
         # 収支 = 13000 - 28300 = -15300
-        financials = calculate_financials(contract)
+        financials = contract.calculate_financials() # Call method on instance
         self.assertEqual(financials['planned_days'], 181)
         self.assertEqual(financials['planned_months'], 7)
         self.assertEqual(financials['balance'], -15300)
@@ -35,7 +33,7 @@ class TestFinancialCalculations(unittest.TestCase):
             contract_date=None,
             scheduled_termination_date=None
         )
-        financials = calculate_financials(contract)
+        financials = contract.calculate_financials() # Call method on instance
         self.assertIsNone(financials['planned_days'])
         self.assertIsNone(financials['planned_months'])
         self.assertIsNone(financials['balance'])
@@ -57,7 +55,7 @@ class TestFinancialCalculations(unittest.TestCase):
         # 支出 = 3300 + 1000 + (2000 * 2) + 0 = 8300
         # 収入 = 0 + 0 = 0
         # 収支 = 0 - 8300 = -8300
-        financials = calculate_financials(contract)
+        financials = contract.calculate_financials() # Call method on instance
         self.assertEqual(financials['planned_months'], 2)
         self.assertEqual(financials['balance'], -8300)
 

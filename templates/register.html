@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% block title %}{{ gettext('Register') }}{% endblock %}
+{% block content %}
+  <h2>{{ gettext('Register') }}</h2>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class=flashes>
+      {% for message in messages %}
+        <li>{{ message }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+  <form method="post">
+    <dl>
+      <dt>{{ gettext('Username') }}</dt>
+      <dd><input type="text" name="username" required></dd>
+      <dt>{{ gettext('Password') }}</dt>
+      <dd><input type="password" name="password" required></dd>
+    </dl>
+    <p><input type="submit" value="{{ gettext('Register') }}">
+  </form>
+  <p>{{ gettext('Already have an account?') }} <a href="{{ url_for('login') }}">{{ gettext('Login') }}</a></p>
+{% endblock %}

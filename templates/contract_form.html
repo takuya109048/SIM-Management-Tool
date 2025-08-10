@@ -13,7 +13,7 @@
             <label for="carrier_name" class="form-label">{{ _('Carrier Name') }}</label>
             <select class="form-select" id="carrier_name" name="carrier_name">
                 <option value="">{{ _('Select a carrier') }}</option>
-                {% for carrier in all_carriers %}
+                {% for carrier in all_carriers_data_for_js %}
                     <option value="{{ carrier.carrier_name }}" {% if contract and contract.carrier_name == carrier.carrier_name %}selected{% endif %}>{{ carrier.carrier_name }}</option>
                 {% endfor %}
             </select>
@@ -23,8 +23,12 @@
             <select class="form-select" id="plan_name" name="plan_name">
                 <option value="">{{ _('Select a plan') }}</option>
                 {% if contract and contract.carrier_name %}
-                    {% for plan in all_carriers | selectattr('carrier_name', '==', contract.carrier_name) | first | attr('plans') %}
-                        <option value="{{ plan.plan_name }}" {% if contract.plan_name == plan.plan_name %}selected{% endif %}>{{ plan.plan_name }}</option>
+                    {% for carrier in all_carriers_data_for_js %}
+                        {% if carrier.carrier_name == contract.carrier_name %}
+                            {% for plan in carrier.plans %}
+                                <option value="{{ plan.plan_name }}" {% if contract.plan_name == plan.plan_name %}selected{% endif %}>{{ plan.plan_name }}</option>
+                            {% endfor %}
+                        {% endif %}
                     {% endfor %}
                 {% endif %}
             </select>
@@ -108,7 +112,7 @@
 </form>
 
 <script>
-    const allCarriersData = {{ all_carriers | tojson }};
+    const allCarriersData = {{ all_carriers_data_for_js }};
 
     document.addEventListener('DOMContentLoaded', function() {
         const carrierSelect = document.getElementById('carrier_name');

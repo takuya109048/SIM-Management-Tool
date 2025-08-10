@@ -2,6 +2,7 @@
 from dataclasses import dataclass, asdict
 from typing import Optional
 from datetime import date
+from utils.date_utils import months_ceil_between
 
 @dataclass
 class Contract:
@@ -22,6 +23,27 @@ class Contract:
     device_cost: Optional[int] = 0
     device_resale_value: Optional[int] = 0
     memo: Optional[str] = None
+
+    def calculate_financials(self):
+        contract_duration_months = 0
+        if self.contract_date and self.scheduled_termination_date:
+            contract_duration_months = months_ceil_between(self.contract_date, self.scheduled_termination_date)
+
+        total_monthly_costs = (self.monthly_cost or 0) * contract_duration_months
+
+        total_cost = (
+            (self.initial_fee or 0) +
+            (self.first_month_cost or 0) +
+            total_monthly_costs +
+            (self.device_cost or 0) -
+            (self.cashback_amount or 0) -
+            (self.device_resale_value or 0)
+        )
+
+        return {
+            'contract_duration_months': contract_duration_months,
+            'total_cost': total_cost
+        }
 
     def to_dict(self):
         return asdict(self)
