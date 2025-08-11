@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory
+import os
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import date
@@ -89,7 +90,9 @@ class Contract:
         if self.contract_date and self.scheduled_termination_date:
             contract_duration_months = months_ceil_between(self.contract_date, self.scheduled_termination_date)
 
-        total_monthly_costs = (self.monthly_cost or 0) * (contract_duration_months if contract_duration_months is not None else 0) # Handle None for multiplication
+        total_monthly_costs = 0
+        if contract_duration_months is not None:
+            total_monthly_costs = (self.monthly_cost or 0) * max(0, contract_duration_months - 1)
 
         total_cost = (
             (self.initial_fee or 0) +
@@ -531,6 +534,53 @@ def delete_contract(contract_id):
         flash('契約が正常に削除されました。', 'success')
     else:
         flash('契約が見つからないか、認証されていません。', 'danger')
+    return redirect(url_for('index'))
+
+@app.route('/export/contracts')
+@login_required
+def export_contracts():
+    data_dir = os.path.join(app.root_path, 'data')
+    return send_from_directory(data_dir, 'contracts.json', as_attachment=True)
+
+@app.route('/import/contracts', methods=['POST'])
+@login_required
+def import_contracts():
+    if 'file' not in request.files:
+        flash('ファイルが選択されていません', 'danger')
+        return redirect(url_for('index'))
+    file = request.files['file']
+    if file.filename == '':
+        flash('ファイルが選択されていません', 'danger')
+        return redirect(url_for('index'))
+    if file and file.filename.endswith('.json'):
+        try:
+            imported_data = json.load(file)
+            
+            # Ensure imported_data is a list
+            if not isinstance(imported_data, list):
+                flash('無効なJSONファイル形式です。トップレベルがリストである必要があります。', 'danger')
+                return redirect(url_for('index'))
+
+            existing_data = load_data(CONTRACTS_FILE)
+            existing_contracts_dict = {c['contract_id']: c for c in existing_data}
+
+            for contract in imported_data:
+                # Basic validation for contract structure
+                if not isinstance(contract, dict) or 'contract_id' not in contract:
+                    flash(f'無効な契約データが含まれています: {contract}', 'danger')
+                    continue # Skip invalid entries
+
+                contract_id = contract['contract_id']
+                existing_contracts_dict[contract_id] = contract
+
+            save_data(CONTRACTS_FILE, list(existing_contracts_dict.values()))
+            flash('契約が正常にインポートされました。', 'success')
+        except json.JSONDecodeError:
+            flash('無効なJSONファイルです。', 'danger')
+        except Exception as e:
+            flash(f'インポート中にエラーが発生しました: {e}', 'danger')
+    else:
+        flash('JSONファイルをアップロードしてください', 'danger')
     return redirect(url_for('index'))
 
 if __name__ == '__main__':

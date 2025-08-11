@@ -5,7 +5,30 @@
 {% block content %}
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h1>契約一覧</h1>
-        <a href="{{ url_for('new_contract') }}" class="btn btn-primary mb-3">新規契約</a>
+    <a href="{{ url_for('new_contract') }}" class="btn btn-primary">新規契約</a>
+</div>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">データ連携</h5>
+        <div class="row">
+            <div class="col-md-6">
+                <h6>エクスポート</h6>
+                <p>現在の契約情報をJSONファイルとしてダウンロードします。</p>
+                <a href="{{ url_for('export_contracts') }}" class="btn btn-success">エクスポート</a>
+            </div>
+            <div class="col-md-6">
+                <h6>インポート</h6>
+                <p>JSONファイルから契約情報をインポートします。契約IDが同じ場合は上書きされます。</p>
+                <form action="{{ url_for('import_contracts') }}" method="post" enctype="multipart/form-data">
+                    <div class="input-group">
+                        <input type="file" class="form-control" name="file" id="importFile" required>
+                        <button class="btn btn-info" type="submit">インポート</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 <form class="row row-cols-lg-auto g-3 align-items-center mb-4" method="get" action="{{ url_for('index') }}">
