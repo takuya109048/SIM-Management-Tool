@@ -92,5 +92,18 @@
                 "minimum_maintenance_period": 181
             }
         ]
+    },
+    {
+        "id": 5,
+        "carrier_name": "J:COMモバイル",
+        "user_id": 1,
+        "plans": [
+            {
+                "id": 1,
+                "plan_name": "Aプラン 1GB",
+                "initial_fee": 0,
+                "minimum_maintenance_period": 1
+            }
+        ]
     }
 ]

@@ -34,6 +34,7 @@
             <th>契約者名</th>
             <th>契約日</th>
             <th>解約予定日</th>
+            <th>契約日数</th>
             <th>収支</th>
             <th>過去契約を含めた総収支</th>
             <th>操作</th>
@@ -48,6 +49,7 @@
             <td>{{ item.contract.contractor_name or 'N/A' }}</td>
             <td>{{ item.contract.contract_date or 'N/A' }}</td>
             <td>{{ item.contract.scheduled_termination_date or 'N/A' }}</td>
+            <td>{{ item.contract_duration_days if item.contract_duration_days is not none else 'N/A' }}</td>
             <td>
                 {% if item.financials.total_cost is not none %}
                     {{ "{:,.0f}".format(item.financials.total_cost) }}

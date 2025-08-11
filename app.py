@@ -337,10 +337,15 @@ def index():
         if current_contract_raw_data:
             chain_total_balance = get_chain_financials(current_contract_raw_data, all_contracts_raw)
 
+        contract_duration_days = None
+        if contract.contract_date and contract.scheduled_termination_date:
+            contract_duration_days = (contract.scheduled_termination_date - contract.contract_date).days
+
         contracts_with_financials.append({
             'contract': contract,
             'financials': financials,
-            'chain_total_balance': chain_total_balance # Add chain total balance
+            'chain_total_balance': chain_total_balance, # Add chain total balance
+            'contract_duration_days': contract_duration_days
         })
     return render_template('index.html', contracts_data=contracts_with_financials, search_query=search_query)
 
